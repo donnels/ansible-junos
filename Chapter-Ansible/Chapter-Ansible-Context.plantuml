@@ -1,0 +1,50 @@
+@startuml
+title Ansible System Context
+footer (C)2021 Sean Donnellan
+
+skinparam backgroundcolor #fff/aaf
+skinparam UsecaseBorderColor #aaf/fff
+skinparam UsecaseBackgroundColor #fff\aaf
+skinparam RectangleBorderColor #aaf/fff
+skinparam RectangleBackgroundColor #fff/aaf
+skinparam ArrowColor #grey
+skinparam ActorBackgroundColor #fff/aaf
+
+usecase proxy
+usecase internet
+actor management
+actor admin.network
+actor devops
+usecase logging
+usecase github
+usecase ldap
+
+rectangle system {
+    usecase "Ansible Environment" as Ansible
+    usecase "Ansible\nTower" as Ansible.Tower
+    usecase vault
+    vault <- Ansible
+    Ansible <-- Ansible.Tower
+}
+rectangle "Managed Devices" as managed {
+    usecase "Overlay\nDevices" as devices.overlay
+    usecase "Underlay\nDevices" as devices.underlay
+    usecase "Internet\nDevices" as devices.internet
+    usecase "REST\nDevices" as devices.REST
+}
+
+internet <-- proxy : HTTPS
+proxy <-- Ansible : HTTPS
+devices.overlay <-- Ansible : SSH
+devices.underlay <-- Ansible : SSH
+devices.internet <-- Ansible : SSH
+devices.REST <-- Ansible : REST
+Ansible -> github : SSH
+Ansible --> ldap : LDAP
+Ansible <--- devops : SSH
+Ansible.Tower <-- management : HTTPS
+Ansible --> logging : Syslog
+Ansible <-- admin.network : SSH
+Ansible.Tower <-- admin.network : HTTPS
+
+@enduml
