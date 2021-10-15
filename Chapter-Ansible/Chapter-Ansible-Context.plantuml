@@ -4,33 +4,36 @@ footer (C)2021 Sean Donnellan
 
 skinparam backgroundcolor #fff/aaf
 skinparam UsecaseBorderColor #aaf/fff
+skinparam UsecaseBorderColor<<system>> #fff/red
+skinparam UsecaseBorderColor<<device>> #green
+skinparam UsecaseBorderColor<<external>> #blue
 skinparam UsecaseBackgroundColor #fff\aaf
 skinparam RectangleBorderColor #aaf/fff
 skinparam RectangleBackgroundColor #fff/aaf
 skinparam ArrowColor #grey
 skinparam ActorBackgroundColor #fff/aaf
 
-usecase proxy
-usecase internet
+usecase proxy<<external>>
+usecase internet<<external>>
 actor management
 actor admin.network
 actor devops
-usecase logging
-usecase github
-usecase ldap
+usecase github<<external>>
+usecase logging<<external>>
+usecase ldap<<external>>
 
 rectangle system {
-    usecase "Ansible Environment" as Ansible
-    usecase "Ansible\nTower" as Ansible.Tower
-    usecase vault
+    usecase "Ansible Environment" as Ansible<<system>>
+    usecase "Ansible\nTower" as Ansible.Tower<<system>>
+    usecase vault<<system>>
     vault <- Ansible
     Ansible <-- Ansible.Tower
 }
 rectangle "Managed Devices" as managed {
-    usecase "Overlay\nDevices" as devices.overlay
-    usecase "Underlay\nDevices" as devices.underlay
-    usecase "Internet\nDevices" as devices.internet
-    usecase "REST\nDevices" as devices.REST
+    usecase "Overlay\nDevices" as devices.overlay<<device>>
+    usecase "Underlay\nDevices" as devices.underlay<<device>>
+    usecase "Internet\nDevices" as devices.internet<<device>>
+    usecase "REST\nDevices" as devices.REST<<device>>
 }
 
 internet <-- proxy : HTTPS
@@ -39,9 +42,10 @@ devices.overlay <-- Ansible : SSH
 devices.underlay <-- Ansible : SSH
 devices.internet <-- Ansible : SSH
 devices.REST <-- Ansible : REST
-Ansible -> github : SSH
+Ansible --> github : SSH
 Ansible --> ldap : LDAP
-Ansible <--- devops : SSH
+Ansible <--devops : SSH
+github <-- devops : GIT\nSSH
 Ansible.Tower <-- management : HTTPS
 Ansible --> logging : Syslog
 Ansible <-- admin.network : SSH
