@@ -5,7 +5,7 @@ ifdef::localdir[]
 endif::localdir[]
 ifndef::localdir[]
 :localdir: ./
-:copyright: (C) 2021 VSR Sean Donnellan
+:copyright: (C)2021 VSR Sean Donnellan
 :orgname: VSR
 :toc: right
 :title-page:
@@ -22,7 +22,7 @@ ifndef::localdir[]
 :pdf-style: vsr-theme.yml
 :pdf-fontsdir: lib/fonts
 :listing-caption: Listing
-:classification: (C)2021 Sean Donnellan - VSR Classified
+:classification: VSR Classified
 :title-logo-image: image::images/Chapter-Ansible-6d90d.png[pdfwidth=4in,align=right]
 endif::localdir[]
 :imagesdir: {localdir}
