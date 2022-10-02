@@ -1,0 +1,41 @@
+@startuml
+title difference BAtch and interactive
+footer (C)2022 Sean Donnellan
+
+skinparam BackgroundColor #fff/aaf
+skinparam usecaseBackgroundColor #fff/aaf
+skinparam cardBackgroundColor #fff/aaf
+skinparam fileBackgroundColor #fff/aaf
+skinparam Shadowing true
+
+actor admin
+rectangle workstation {
+    file batch [
+        Config
+        ----
+        Command 1
+        command 2
+        command 3
+        command 4
+        ...
+        command n
+    ]
+    card terminal
+}
+usecase router <<system>>
+
+admin ..> batch : editor
+batch ..> router : netconf
+
+admin ..> terminal : CLI
+note on link
+command 1
+end note
+admin <.. terminal : immediate\nresponse\ncommand 1
+terminal ..> router : SSH\nSerial
+note on link
+command 1
+end note
+terminal ..> router : immediate\nresponse\ncommand 1
+
+@enduml

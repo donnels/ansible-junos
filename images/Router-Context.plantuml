@@ -1,0 +1,37 @@
+@startuml
+title Context Diagram Router management
+footer (C)2022 Sean Donnellan
+
+skinparam BackgroundColor #fff/aaf
+skinparam usecaseBackgroundColor #fff/aaf
+skinparam usecaseBackgroundColor<<system>> #fff/blue 
+skinparam Shadowing true
+
+actor admin
+usecase router <<system>>
+usecase workstation
+usecase network
+
+admin --> workstation : GUI
+workstation --> router #red: USB adapter\nSerial Console Port\n9600-8-n-1
+note on link
+Initial setup
+end note
+router <|. network #green : IP
+network - router : LAN
+workstation -- network : LAN
+workstation ..|> network #green : IP
+note on link
+Normal Operations
+end note
+
+legend
+Initial Configuration via serial port
+ - Serial Terminal program (eg minicom)
+Normal operation
+ - SSH (interactive)
+   - Netconf (batch)
+ - HTTP(s) onboard GUI (interactive/batch)
+ - Tooling (network mgmt tools) 
+end legend
+@enduml
